@@ -1,27 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="ms">
 <head>
-  <title>Thank You | D'Anjung Cottage</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <title>Portal Tetamu | D'Anjung Cottage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
-    body { margin: 0; padding: 0; overflow: hidden; }
-    iframe { width: 100vw; height: 100vh; border: none; }
+    /* Menghilangkan scrollbar pada body supaya nampak macam Apps asli */
+    body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background-color: #f8fafc; }
+    iframe { width: 100%; height: 100%; border: none; display: block; }
   </style>
 </head>
 <body>
-  <iframe id="portalFrame" src=""></iframe>
+  <iframe id="portalFrame" src="about:blank"></iframe>
 
   <script>
+    // 1. Ambil data dari URL browser (book.danjungcottage.com/thankyou?ref=...&phone=...)
     const urlParams = new URLSearchParams(window.location.search);
-    const ref = urlParams.get('ref');
-    const phone = urlParams.get('phone');
+    const ref = urlParams.get('ref') || "";
+    const phone = urlParams.get('phone') || "";
     
-    // Alamat Apps Script (URL yang anda berikan tadi)
-    const scriptBase = "https://script.google.com/macros/s/AKfycbw2_wUfs50My4WUxL9EBe0Hq3Kst_trolw3ilzng_oPWW62z7NCs86ValF2PKhvJt5Y/exec?mode=portal";
+    // 2. URL Asal Apps Script anda
+    const scriptID = "AKfycbw2_wUfs50My4WUxL9EBe0Hq3Kst_trolw3ilzng_oPWW62z7NCs86ValF2PKhvJt5Y";
+    const scriptBase = `https://script.google.com/macros/s/${scriptID}/exec`;
     
-    // Bina URL lengkap dengan mode=thanks
-    const finalURL = `${scriptBase}?mode=thanks&ref=${ref}&phone=${phone}`;
+    // 3. Tentukan mode (Jika ada ref & phone, kita terus ke mode=portal supaya dia auto-search)
+    // Gunakan '&' untuk menyambung parameter, bukan '?' dua kali.
+    const finalURL = `${scriptBase}?mode=portal&ref=${encodeURIComponent(ref)}&phone=${encodeURIComponent(phone)}`;
     
+    // 4. Masukkan ke dalam IFrame
     document.getElementById('portalFrame').src = finalURL;
   </script>
 </body>
