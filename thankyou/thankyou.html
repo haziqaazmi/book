@@ -1,30 +1,28 @@
-<script>
-  // 1. Ambil Parameter dari URL GitHub (e.g. ?ref=HRTEST123&phone=0123456789)
-  const urlParams = new URLSearchParams(window.location.search);
-  const bookingRef = urlParams.get('ref');
-  const guestPhone = urlParams.get('phone');
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Thank You | D'Anjung Cottage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { margin: 0; padding: 0; overflow: hidden; }
+    iframe { width: 100vw; height: 100vh; border: none; }
+  </style>
+</head>
+<body>
+  <iframe id="portalFrame" src=""></iframe>
 
-  // 2. Alamat Apps Script Baru Anda
-  const scriptURL = "https://script.google.com/macros/s/AKfycbzA4eboL1zkvRmzWN5P5yMYvlxPHYJxneVv7q_v5cwooC4yoaAbLs1czynWvrKqTWIu/exec";
-
-  // 3. Fungsi Ambil Data dari Google Sheet (via Apps Script)
-  async function fetchBookingData() {
-    if (!bookingRef) return;
-
-    try {
-      // Panggil Apps Script mode=thanks untuk dapatkan data JSON/HTML
-      const response = await fetch(`${scriptURL}?mode=thanks&ref=${bookingRef}&phone=${guestPhone}`);
-      const data = await response.text();
-      
-      // Masukkan hasil ke dalam div di GitHub
-      document.getElementById('booking-content').innerHTML = data;
-    } catch (error) {
-      console.error("Gagal menarik data:", error);
-      document.getElementById('booking-content').innerText = "Ralat memuatkan data. Sila cuba lagi.";
-    }
-  }
-
-  window.onload = fetchBookingData;
-</script>
-
-<div id="booking-content">Memuatkan butiran tempahan D'Anjung Cottage...</div>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const ref = urlParams.get('ref');
+    const phone = urlParams.get('phone');
+    
+    // Alamat Apps Script (URL yang anda berikan tadi)
+    const scriptBase = "https://script.google.com/macros/s/AKfycbzA4eboL1zkvRmzWN5P5yMYvlxPHYJxneVv7q_v5cwooC4yoaAbLs1czynWvrKqTWIu/exec";
+    
+    // Bina URL lengkap dengan mode=thanks
+    const finalURL = `${scriptBase}?mode=thanks&ref=${ref}&phone=${phone}`;
+    
+    document.getElementById('portalFrame').src = finalURL;
+  </script>
+</body>
+</html>
